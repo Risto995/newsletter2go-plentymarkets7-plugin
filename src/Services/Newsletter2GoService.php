@@ -2,28 +2,46 @@
 
 namespace Newsletter2Go\Services;
 
-use IO\Services\WebstoreConfigurationService;
-use IO\Helper\TemplateContainer;
+use Plenty\Plugin\Application;
+use Plenty\Modules\System\Models\WebstoreConfiguration;
+use Plenty\Modules\System\Contracts\WebstoreConfigurationRepositoryContract;
 
-/**
- * Class Newsletter2GoService
- * @package Newsletter2Go\Services
- */
 class Newsletter2GoService
 {
-    public function getShopUrl() {
-        /** @var WebstoreConfigurationService $webstoreConfig */
-        $webstoreConfig = pluginApp(WebstoreConfigurationService::class);
-        $storeConf = $webstoreConfig->getWebstoreConfig()->toArray();
+    private $shopUrl;
 
+    public function getShopUrl()
+    {
+        if ($this->shopUrl === null) {
+            $this->shopUrl = $this->getWebStoreConfig()->domainSsl;
+        }
+
+        return $this->shopUrl;
+    }
+
+    /**
+     * @fixme This method is completely wrong... and worse I've no idea what it's supposed to do.
+     */
+    public function getTemplate() {
+        /**
+         * @see https://github.com/plentymarkets/plugin-io/blob/master/src/Helper/TemplateContainer.php
+         * @var TemplateContainer $templateContainer
+         */
+        $templateContainer = pluginApp(TemplateContainer::class);
+        $storeConf = $templateContainer->getTemplate();
         return $storeConf['domainSsl'];
     }
 
-    public function getTemplate() {
-        /** @var TemplateContainer $templateContainer */
-        $templateContainer = pluginApp(TemplateContainer::class);
-        $storeConf = $templateContainer->getTemplate();
+    /**
+     * @return WebstoreConfiguration
+     */
+    private function getWebStoreConfig()
+    {
+        /** @var Application $app */
+        $app = pluginApp(Application::class);
+        /** @var WebstoreConfigurationRepositoryContract $repo */
+        $repo = pluginApp(WebstoreConfigurationRepositoryContract::class);
 
-        return $storeConf['domainSsl'];
+        return $repo->findByPlentyId($app->getPlentyId());
     }
 }

@@ -28,9 +28,7 @@ class ApiController extends Controller
      */
     private $createOrderResult = [];
 
-    public function __construct(
-        Response $response,
-        Request $request)
+    public function __construct(Response $response, Request $request)
     {
         $this->response = $response;
         $this->request = $request;
@@ -40,12 +38,14 @@ class ApiController extends Controller
      * Retrieves all request params and authenticates user
      *
      * @param Request $request
+     *
      * @return array
      *
      */
     public function export(Request $request)
     {
         $this->createOrderResult['test'] = 'works';
+
         return $this->createOrderResult;
     }
 }
