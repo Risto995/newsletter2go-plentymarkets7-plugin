@@ -59,10 +59,26 @@ class ApiController extends Controller
      */
     public function customers(Request $request)
     {
+        $groups = $request->get('groups');
         /** @var ContactRepositoryContract $contactRepository */
         $contactRepository = pluginApp(ContactRepositoryContract::class);
         $contacts = $contactRepository->getContactList();
-
+        
         return $contacts;
+    }
+
+    public function checkEmail($email)
+    {
+        $notAllowed = ['amazon.com'];
+
+        // Make sure the address is valid
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $explodedEmail = explode('@', $email);
+            $domain = array_pop($explodedEmail);
+
+            if (in_array($domain, $notAllowed)) {
+                // Not allowed
+            }
+        }
     }
 }
