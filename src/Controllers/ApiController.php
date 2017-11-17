@@ -2,6 +2,8 @@
 
 namespace Newsletter2Go\Controllers;
 
+use IO\Services\CustomerService;
+use Plenty\Modules\Account\Contact\Contracts\ContactRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Response;
 use Plenty\Plugin\Http\Request;
@@ -47,5 +49,20 @@ class ApiController extends Controller
     {
         $this->createOrderResult['test'] = 'works';
         return $this->createOrderResult;
+    }
+
+    /**
+     * Returns all customers on the system
+     *
+     * @param Request $request
+     * @return \Plenty\Repositories\Models\PaginatedResult
+     */
+    public function customers(Request $request)
+    {
+        /** @var ContactRepositoryContract $contactRepository */
+        $contactRepository = pluginApp(ContactRepositoryContract::class);
+        $contacts = $contactRepository->getContactList();
+
+        return $contacts;
     }
 }
