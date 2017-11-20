@@ -39,7 +39,7 @@ class Newsletter2GoController extends Controller
             }
         }
 
-        return $filteredContacts;
+        return $contact;
     }
 
     public function checkEmail($email)
