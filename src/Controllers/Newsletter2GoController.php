@@ -28,6 +28,7 @@ class Newsletter2GoController extends Controller
      */
     public function customers(Request $request)
     {
+        $newsletterSubscribersOnly = $request->get('newsletterSubscribersOnly') == true;
         /** @var ContactRepositoryContract $contactRepository */
         $contactRepository = pluginApp(ContactRepositoryContract::class);
         $contacts = $contactRepository->getContactList()->getResult();
@@ -35,7 +36,13 @@ class Newsletter2GoController extends Controller
 
         foreach ($contacts as $contact){
             if($this->checkEmail($contact['email'])){
-               array_push($filteredContacts, $contact);
+               if($newsletterSubscribersOnly && $contact['newsletterAllowanceAt'] != null){
+                   array_push($filteredContacts, $contact);
+               }
+
+               if(!$newsletterSubscribersOnly){
+                   array_push($filteredContacts, $contact);
+               }
             }
         }
 
