@@ -12,7 +12,11 @@ class Newsletter2GoController extends Controller
 {
     public function test(Twig $twig)
     {
-        return $twig->render('Newsletter2Go::content.hello');
+        /** @var ContactRepositoryContract $contactRepository */
+        $contactRepository = pluginApp(ContactRepositoryContract::class);
+        $contacts = $contactRepository->getContactList();
+
+        return $contacts;
     }
 
     /**
