@@ -30,8 +30,7 @@ class Newsletter2GoController extends Controller
     {
         /** @var ContactRepositoryContract $contactRepository */
         $contactRepository = pluginApp(ContactRepositoryContract::class);
-        $contacts = $contactRepository->getContactList()->toArray();
-        $filteredContacts = [];
+        $contacts = $contactRepository->getContactList()->getResult();
 
         foreach ($contacts as $contact){
             if($this->checkEmail($contact['email'])){
