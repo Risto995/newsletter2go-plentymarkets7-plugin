@@ -7,6 +7,7 @@ use Plenty\Plugin\Controller;
 use Plenty\Plugin\Templates\Twig;
 use Plenty\Modules\Account\Contact\Contracts\ContactRepositoryContract;
 use Plenty\Plugin\Http\Request;
+use Plenty\Repositories\Models\PaginatedResult;
 
 class Newsletter2GoController extends Controller
 {
@@ -29,7 +30,7 @@ class Newsletter2GoController extends Controller
     {
         /** @var ContactRepositoryContract $contactRepository */
         $contactRepository = pluginApp(ContactRepositoryContract::class);
-        $contacts = $contactRepository->getContactList()['entries'];
+        $contacts = $contactRepository->getContactList()->toArray();
         $filteredContacts = [];
 
         foreach ($contacts as $contact){
@@ -42,7 +43,7 @@ class Newsletter2GoController extends Controller
     }
 
     public function checkEmail($email)
-     {
+    {
          $notAllowed = ['amazon.com'];
 
          // Make sure the address is valid
@@ -58,5 +59,5 @@ class Newsletter2GoController extends Controller
         }
 
         return false;
-     }
+    }
 }
