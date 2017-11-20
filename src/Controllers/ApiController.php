@@ -47,8 +47,7 @@ class ApiController extends Controller
      */
     public function export(Request $request)
     {
-        $this->createOrderResult['test'] = 'works';
-        return $this->createOrderResult;
+        return 'Test';
     }
 
     /**
@@ -57,15 +56,15 @@ class ApiController extends Controller
      * @param Request $request
      * @return \Plenty\Repositories\Models\PaginatedResult
      */
-    public function customers(Request $request)
+    /*public function customers(Request $request)
     {
-        $groups = $request->get('groups');
+        $groups = $request->get('groups');*/
         /** @var ContactRepositoryContract $contactRepository */
-        $contactRepository = pluginApp(ContactRepositoryContract::class);
+/*        $contactRepository = pluginApp(ContactRepositoryContract::class);
         $contacts = $contactRepository->getContactList();
         
         return $contacts;
-    }
+    }*/
 
     public function checkEmail($email)
     {

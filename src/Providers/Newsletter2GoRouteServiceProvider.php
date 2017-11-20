@@ -12,7 +12,7 @@ use Plenty\Plugin\Routing\ApiRouter;
 class Newsletter2GoRouteServiceProvider extends RouteServiceProvider
 {
 
-	public function map(Router $router, ApiRouter $api)
+	public function map(Router $router)
 	{
         $router->get('newsletter2go/export', 'Newsletter2Go\Controllers\ApiController@export');
 		//$router->get('newsletter2go/customers', 'Newsletter2Go\Controllers\ApiController@customers');
