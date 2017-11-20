@@ -29,8 +29,34 @@ class Newsletter2GoController extends Controller
     {
         /** @var ContactRepositoryContract $contactRepository */
         $contactRepository = pluginApp(ContactRepositoryContract::class);
-        $contacts = $contactRepository->getContactList();
+        $contacts = $contactRepository->getContactList()['entries'];
+        $filteredContacts = [];
 
-        return $contacts;
+        foreach ($contacts as $contact){
+            if($this->checkEmail($contact['email'])){
+               array_push($filteredContacts, $contact);
+            }
+        }
+
+        return $filteredContacts;
     }
+
+    public function checkEmail($email)
+     {
+         $notAllowed = ['amazon.com'];
+
+         // Make sure the address is valid
+         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+             $explodedEmail = explode('@', $email);
+             $domain = array_pop($explodedEmail);
+
+             if (in_array($domain, $notAllowed)) {
+                 return false;
+             }
+
+             return true;
+        }
+
+        return false;
+     }
 }
