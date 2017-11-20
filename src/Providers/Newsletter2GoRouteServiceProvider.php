@@ -21,12 +21,10 @@ class Newsletter2GoRouteServiceProvider extends RouteServiceProvider
     public function map(Router $router)
     {
         $router->get('newsletter2go/export', [
-            'middleware' => 'oauth',
             'uses'       => 'Newsletter2Go\Controllers\ApiController@export'
         ]);
 
 		$router->get('newsletter2go/customers', [
-			'middleware' => 'oauth',
 			'uses'       => 'Newsletter2Go\Controllers\ApiController@customers'
 		]);
     }
