@@ -19,9 +19,9 @@ class Newsletter2GoServiceProvider extends ServiceProvider
 		$this->getApplication()->register(Newsletter2GoRouteServiceProvider::class);
 	}
 
-	public function boot(Twig $twig)
+/*	public function boot(Twig $twig)
 	{
 		// Register Twig String Loader to use function: template_from_string
 		$twig->addExtension('Twig_Extension_StringLoader');
-	}
+	}*/
 }
