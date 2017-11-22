@@ -35,9 +35,9 @@ class Newsletter2GoController extends Controller
             FILTER_VALIDATE_BOOLEAN);
         $page = $request->get('page', 1);
         $limit = $request->get('limit', 50);
-        $fields = $request->get('fields', 'id,firstName,lastName');
+        $fields = $request->get('fields', 'id,firstName,lastName,newsletterAllowanceAt,classId');
         $fields = explode(",", $fields);
-        $group = $request->get('group');
+        $group = $request->get('group', null);
         /** @var ContactRepositoryContract $contactRepository */
         $contactRepository = pluginApp(ContactRepositoryContract::class);
         $contacts = $contactRepository->getContactList([], [], $fields, $page, $limit)->getResult();
