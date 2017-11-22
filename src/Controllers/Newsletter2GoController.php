@@ -27,11 +27,10 @@ class Newsletter2GoController extends Controller
      */
     public function customers(Request $request)
     {
-        $newsletterSubscribersOnly = $request->get('newsletterSubscribersOnly') != null
-            ? $request->get('newsletterSubscribersOnly') : false;
-        $page = $request->get('page') != null ? $request->get('page') : 1;
-        $limit = $request->get('limit') != null ? $request->get('limit') : 50;
-        $fields = $request->get('fields') != null ? $request->get('fields') : [];
+        $newsletterSubscribersOnly = $request->get('newsletterSubscribersOnly', false);
+        $page = $request->get('page', 1);
+        $limit = $request->get('limit', 50);
+        $fields = $request->get('fields', ['id', 'firstName', 'lastName']);
         /** @var ContactRepositoryContract $contactRepository */
         $contactRepository = pluginApp(ContactRepositoryContract::class);
         $contacts = $contactRepository->getContactList([], [], $fields, $page, $limit)->getResult();
