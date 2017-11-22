@@ -2,6 +2,7 @@
 
 namespace Newsletter2Go\Controllers;
 
+use Plenty\Modules\Account\Contact\Contracts\ContactClassRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Templates\Twig;
 use Plenty\Modules\Account\Contact\Contracts\ContactRepositoryContract;
@@ -10,6 +11,9 @@ use Plenty\Repositories\Models\PaginatedResult;
 
 class Newsletter2GoController extends Controller
 {
+    private $url = 'https://logeecom.plentymarkets-cloud01.com/';
+    private $apiKey = '';
+
     public function test(Twig $twig)
     {
         /** @var ContactRepositoryContract $contactRepository */
@@ -27,19 +31,31 @@ class Newsletter2GoController extends Controller
      */
     public function customers(Request $request)
     {
-        $newsletterSubscribersOnly = filter_var($request->get('newsletterSubscribersOnly', false), FILTER_VALIDATE_BOOLEAN);
+        $newsletterSubscribersOnly = filter_var($request->get('newsletterSubscribersOnly', false),
+            FILTER_VALIDATE_BOOLEAN);
         $page = $request->get('page', 1);
         $limit = $request->get('limit', 50);
         $fields = $request->get('fields', 'id,firstName,lastName');
         $fields = explode(",", $fields);
+        $group = $request->get('group');
         /** @var ContactRepositoryContract $contactRepository */
         $contactRepository = pluginApp(ContactRepositoryContract::class);
         $contacts = $contactRepository->getContactList([], [], $fields, $page, $limit)->getResult();
         $filteredContacts = [];
 
-        foreach ($contacts as $contact) {
+        /** @var ContactClassRepositoryContract $contactClassRepository */
+        $contactClassRepository = pluginApp(ContactClassRepositoryContract::class);
+        $classes = $contactClassRepository->allContactClasses();
+
+        return $classes;
+
+
+        /*foreach ($contacts as $contact) {
             if ($this->checkEmail($contact['email'])) {
                 if ($newsletterSubscribersOnly && $contact['newsletterAllowanceAt'] != null) {
+                    if($group != null){
+                        //TODO: do stuff
+                    }
                     array_push($filteredContacts, $contact);
                 }
 
@@ -49,7 +65,7 @@ class Newsletter2GoController extends Controller
             }
         }
 
-        return $filteredContacts;
+        return $filteredContacts;*/
     }
 
     public function checkEmail($email)
