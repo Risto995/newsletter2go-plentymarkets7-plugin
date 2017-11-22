@@ -34,7 +34,7 @@ class Newsletter2GoController extends Controller
         $fields = $request->get('fields') != null ? $request->get('fields') : [];
         /** @var ContactRepositoryContract $contactRepository */
         $contactRepository = pluginApp(ContactRepositoryContract::class);
-        $contacts = $contactRepository->getContactList([], [], [], 1, 50)->getResult();
+        $contacts = $contactRepository->getContactList([], [], $fields, $page, $limit)->getResult();
         $filteredContacts = [];
 
         foreach ($contacts as $contact) {
