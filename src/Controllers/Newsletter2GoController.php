@@ -42,30 +42,43 @@ class Newsletter2GoController extends Controller
         $contactRepository = pluginApp(ContactRepositoryContract::class);
         $contacts = $contactRepository->getContactList([], [], $fields, $page, $limit)->getResult();
         $filteredContacts = [];
+        $groupNumber = 0;
 
-        /** @var ContactClassRepositoryContract $contactClassRepository */
-        $contactClassRepository = pluginApp(ContactClassRepositoryContract::class);
-        $classes = $contactClassRepository->allContactClasses();
+        if ($group != null) {
+            /** @var ContactClassRepositoryContract $contactClassRepository */
+            $contactClassRepository = pluginApp(ContactClassRepositoryContract::class);
+            $classes = $contactClassRepository->allContactClasses();
 
-        return $classes;
-
-
-        /*foreach ($contacts as $contact) {
-            if ($this->checkEmail($contact['email'])) {
-                if ($newsletterSubscribersOnly && $contact['newsletterAllowanceAt'] != null) {
-                    if($group != null){
-                        //TODO: do stuff
-                    }
-                    array_push($filteredContacts, $contact);
-                }
-
-                if (!$newsletterSubscribersOnly) {
-                    array_push($filteredContacts, $contact);
+            foreach ($classes as $key => $value) {
+                if ($value == $group) {
+                    $groupNumber = $key;
                 }
             }
         }
 
-        return $filteredContacts;*/
+        foreach ($contacts as $contact) {
+            if ($this->checkEmail($contact['email'])) {
+                if ($newsletterSubscribersOnly && $contact['newsletterAllowanceAt'] != null) {
+                    if ($group != null && $contact['classId'] == $groupNumber) {
+                        array_push($filteredContacts, $contact);
+                    }
+                    if ($group == null) {
+                        array_push($filteredContacts, $contact);
+                    }
+                }
+
+                if (!$newsletterSubscribersOnly) {
+                    if ($group != null && $contact['classId'] == $groupNumber) {
+                        array_push($filteredContacts, $contact);
+                    }
+                    if ($group == null) {
+                        array_push($filteredContacts, $contact);
+                    }
+                }
+            }
+        }
+
+        return $filteredContacts;
     }
 
     public function checkEmail($email)
