@@ -62,9 +62,16 @@ class Newsletter2GoController extends Controller
         $page = $request->get('page', 1);
         $limit = $request->get('limit', 50);
         $hours = $request->get('hours', null);
+        $emails = $request->get('emails');
+        if($emails != null){
+            $emails = explode(",", $emails);
+        }
         $fields = $request->get('fields', 'id,firstName,lastName,newsletterAllowanceAt,classId,updatedAt');
         $fields = explode(",", $fields);
-        $groups = explode(",", $request->get('groups', null));
+        $groups = $request->get('groups', null);
+        if($groups != null){
+            $groups = explode(",", $groups);
+        }
         /** @var ContactRepositoryContract $contactRepository */
         $contactRepository = pluginApp(ContactRepositoryContract::class);
         $contacts = $contactRepository->getContactList([], [], $fields, $page, $limit)->getResult();
@@ -74,7 +81,7 @@ class Newsletter2GoController extends Controller
         foreach ($contacts as $contact) {
             if ($this->checkEmail($contact['email'])) {
                 if ($newsletterSubscribersOnly && $contact['newsletterAllowanceAt'] != null) {
-                    if ($groups != null && in_array($contact['classId'],$groups)) {
+                    if ($groups != null && in_array($contact['classId'], $groups)) {
                         array_push($filteredContacts, $contact);
                     }
                     if ($groups == null) {
@@ -83,7 +90,7 @@ class Newsletter2GoController extends Controller
                 }
 
                 if (!$newsletterSubscribersOnly) {
-                    if ($groups != null && in_array($contact['classId'],$groups)) {
+                    if ($groups != null && in_array($contact['classId'], $groups)) {
                         array_push($filteredContacts, $contact);
                     }
                     if ($groups == null) {
@@ -93,17 +100,12 @@ class Newsletter2GoController extends Controller
             }
         }
 
-        if($hours != null){
-            $timestamp = date('m-d g:Ga', strtotime('-' . $hours . ' hours', strtotime(date('Y-m-d H:i:s'))));
-            foreach ($filteredContacts as $contact){
-                if(strtotime($contact['updatedAt']) > strtotime($timestamp)){
-                    array_push($hoursContacts, $contact);
-                }
-            }
-            $response['data'] = $hoursContacts;
-            $response['success'] = true;
+        if ($hours != null) {
+            $filteredContacts = $this->checkHours($filteredContacts, $hours);
+        }
 
-            return $response;
+        if($emails != null){
+            $filteredContacts = $this->filterEmails($filteredContacts, $emails);
         }
 
         $response['data'] = $filteredContacts;
@@ -129,5 +131,30 @@ class Newsletter2GoController extends Controller
         }
 
         return false;
+    }
+
+    public function checkHours($contacts, $hours)
+    {
+        $hoursContacts = [];
+        $timestamp = date('m-d g:Ga', strtotime('-' . $hours . ' hours', strtotime(date('Y-m-d H:i:s'))));
+        foreach ($contacts as $contact) {
+            if (strtotime($contact['updatedAt']) > strtotime($timestamp)) {
+                array_push($hoursContacts, $contact);
+            }
+        }
+
+        return $hoursContacts;
+    }
+
+    public function filterEmails($contacts, $emails)
+    {
+        $emailContacts = [];
+        foreach ($contacts as $contact){
+            if(in_array($contact['email'], $emails)){
+                array_push($emailContacts, $contact);
+            }
+        }
+
+        return $emailContacts;
     }
 }
