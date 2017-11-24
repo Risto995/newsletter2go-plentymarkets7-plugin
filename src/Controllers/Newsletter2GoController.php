@@ -4,7 +4,6 @@ namespace Newsletter2Go\Controllers;
 
 use Plenty\Modules\Account\Contact\Contracts\ContactClassRepositoryContract;
 use Plenty\Plugin\Controller;
-use Plenty\Plugin\Templates\Twig;
 use Plenty\Modules\Account\Contact\Contracts\ContactRepositoryContract;
 use Plenty\Plugin\Http\Request;
 use Plenty\Repositories\Models\PaginatedResult;
@@ -13,15 +12,18 @@ class Newsletter2GoController extends Controller
 {
     private $version = 1.0;
 
-    public function test(Twig $twig)
+    /**
+     * @return bool
+     */
+    public function test()
     {
-        /** @var ContactRepositoryContract $contactRepository */
-        $contactRepository = pluginApp(ContactRepositoryContract::class);
-        $contacts = $contactRepository->getContactList();
-
-        return $contacts;
+        return true;
     }
 
+    /**
+     * @param Request $request
+     * @return float
+     */
     public function version(Request $request)
     {
         return $this->version;
