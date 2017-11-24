@@ -34,6 +34,22 @@ class Newsletter2GoController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function customerCount(Request $request)
+    {
+        /** @var ContactRepositoryContract $contactRepository */
+        $contactRepository = pluginApp(ContactRepositoryContract::class);
+        $contacts = $contactRepository->getContactList()->getResult();
+
+        $response['data'] = count($contacts);
+        $response['success'] = true;
+
+        return $response;
+    }
+
+    /**
      * Returns all customers on the system
      *
      * @param Request $request
