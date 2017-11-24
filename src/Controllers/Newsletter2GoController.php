@@ -102,9 +102,9 @@ class Newsletter2GoController extends Controller
         $timestamp = date('m-d g:Ga', strtotime('-6 hours', strtotime("2017-11-22T15:09:42+00:00")));
 
         if ($timestamp < strtotime("2017-11-22T15:09:42+00:00")){
-            return true;
+            return $response['test'] = true;
         } else {
-            return false;
+            return $response['test'] = false;
         }
     }
 
