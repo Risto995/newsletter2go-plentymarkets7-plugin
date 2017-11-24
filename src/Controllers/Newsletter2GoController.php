@@ -11,8 +11,7 @@ use Plenty\Repositories\Models\PaginatedResult;
 
 class Newsletter2GoController extends Controller
 {
-    private $url = 'https://logeecom.plentymarkets-cloud01.com/';
-    private $apiKey = '';
+    private $version = 1.0;
 
     public function test(Twig $twig)
     {
@@ -21,6 +20,11 @@ class Newsletter2GoController extends Controller
         $contacts = $contactRepository->getContactList();
 
         return $contacts;
+    }
+
+    public function version(Request $request)
+    {
+        return $this->version;
     }
 
     /**

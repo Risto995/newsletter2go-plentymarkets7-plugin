@@ -12,5 +12,6 @@ class Newsletter2GoRouteServiceProvider extends RouteServiceProvider
     {
         $router->get('newsletter2go/export','Newsletter2Go\Controllers\Newsletter2GoController@test');
         $router->get('newsletter2go/customers','Newsletter2Go\Controllers\Newsletter2GoController@customers');
+        $router->get('newsletter2go/version','Newsletter2Go\Controllers\Newsletter2GoController@version');
     }
 }
