@@ -93,21 +93,21 @@ class Newsletter2GoController extends Controller
             }
         }
 
-        /*if($hours != null){
+        if($hours != null){
+            $timestamp = date('m-d g:Ga', strtotime('-' . $hours . ' hours', date('Y-m-d H:i:s')));
             foreach ($filteredContacts as $contact){
-                $timestamp = date('m-d g:Ga', strtotime($contact['updatedAt'])-$hours*3600);
+                if($contact['updatedAt'] > $timestamp){
+                    array_push($hoursContacts, $contact);
+                }
             }
-        }*/
+            $response['data'] = $hoursContacts;
+            $response['success'] = true;
 
-        $timestamp = date('m-d g:Ga', strtotime('-6 hours', strtotime("2017-11-22T15:09:42+00:00")));
-
-        $response = [];
-
-        if ($timestamp < strtotime("2017-11-22T15:09:42+00:00")){
-            $response['test'] = true;
-        } else {
-            $response['test'] = false;
+            return $response;
         }
+
+        $response['data'] = $filteredContacts;
+        $response['success'] = true;
 
         return $response;
     }
