@@ -61,50 +61,47 @@ class Newsletter2GoController extends Controller
             FILTER_VALIDATE_BOOLEAN);
         $page = $request->get('page', 1);
         $limit = $request->get('limit', 50);
-        $fields = $request->get('fields', 'id,firstName,lastName,newsletterAllowanceAt,classId');
+        $hours = $request->get('hours', null);
+        $fields = $request->get('fields', 'id,firstName,lastName,newsletterAllowanceAt,classId,updatedAt');
         $fields = explode(",", $fields);
-        $group = $request->get('group', null);
+        $groups = explode(",", $request->get('groups', null));
         /** @var ContactRepositoryContract $contactRepository */
         $contactRepository = pluginApp(ContactRepositoryContract::class);
         $contacts = $contactRepository->getContactList([], [], $fields, $page, $limit)->getResult();
         $filteredContacts = [];
-        $groupNumber = 0;
-
-        if ($group != null) {
-            /** @var ContactClassRepositoryContract $contactClassRepository */
-            $contactClassRepository = pluginApp(ContactClassRepositoryContract::class);
-            $classes = $contactClassRepository->allContactClasses();
-
-            foreach ($classes as $key => $value) {
-                if ($value == $group) {
-                    $groupNumber = $key;
-                }
-            }
-        }
+        $hoursContacts = [];
 
         foreach ($contacts as $contact) {
             if ($this->checkEmail($contact['email'])) {
                 if ($newsletterSubscribersOnly && $contact['newsletterAllowanceAt'] != null) {
-                    if ($group != null && $contact['classId'] == $groupNumber) {
+                    if ($groups != null && in_array($contact['classId'],$groups)) {
                         array_push($filteredContacts, $contact);
                     }
-                    if ($group == null) {
+                    if ($groups == null) {
                         array_push($filteredContacts, $contact);
                     }
                 }
 
                 if (!$newsletterSubscribersOnly) {
-                    if ($group != null && $contact['classId'] == $groupNumber) {
+                    if ($groups != null && in_array($contact['classId'],$groups)) {
                         array_push($filteredContacts, $contact);
                     }
-                    if ($group == null) {
+                    if ($groups == null) {
                         array_push($filteredContacts, $contact);
                     }
                 }
             }
         }
 
-        return $filteredContacts;
+        /*if($hours != null){
+            foreach ($filteredContacts as $contact){
+                $timestamp = date('m-d g:Ga', strtotime($contact['updatedAt'])-$hours*3600);
+            }
+        }*/
+
+        $timestamp = $timestamp = date('m-d g:Ga', strtotime("2017-11-22T15:09:42+00:00")-21600);
+
+        return $timestamp;
     }
 
     public function checkEmail($email)
