@@ -18,6 +18,7 @@ class Newsletter2GoController extends Controller
     public function test()
     {
         $response['test'] = true;
+        $response['success'] = true;
         return $response;
     }
 
@@ -27,7 +28,9 @@ class Newsletter2GoController extends Controller
      */
     public function version(Request $request)
     {
-        return $this->version;
+        $response['data'] = $this->version;
+        $response['success'] = true;
+        return $response;
     }
 
     /**
