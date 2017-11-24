@@ -17,7 +17,8 @@ class Newsletter2GoController extends Controller
      */
     public function test()
     {
-        return true;
+        $response['test'] = true;
+        return $response;
     }
 
     /**
