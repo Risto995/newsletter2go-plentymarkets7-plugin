@@ -101,7 +101,11 @@ class Newsletter2GoController extends Controller
 
         $timestamp = date('m-d g:Ga', strtotime('-6 hours', strtotime("2017-11-22T15:09:42+00:00")));
 
-        return $timestamp;
+        if ($timestamp < strtotime("2017-11-22T15:09:42+00:00")){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function checkEmail($email)
