@@ -94,9 +94,9 @@ class Newsletter2GoController extends Controller
         }
 
         if($hours != null){
-            $timestamp = date('m-d g:Ga', strtotime('-' . $hours . ' hours', date('Y-m-d H:i:s')));
+            $timestamp = date('m-d g:Ga', strtotime('-' . $hours . ' hours', strtotime(date('Y-m-d H:i:s'))));
             foreach ($filteredContacts as $contact){
-                if($contact['updatedAt'] > $timestamp){
+                if(strtotime($contact['updatedAt']) > strtotime($timestamp)){
                     array_push($hoursContacts, $contact);
                 }
             }
