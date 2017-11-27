@@ -73,7 +73,7 @@ class Newsletter2GoController extends Controller
 
         foreach ($contacts as $contact) {
             if ($this->checkEmail($contact['email'])) {
-                if (!$newsletterSubscribersOnly || $contact['newsletterAllowanceAt'] === null) {
+                if ($newsletterSubscribersOnly && $contact['newsletterAllowanceAt'] === null) {
                     continue;
                 }
 
