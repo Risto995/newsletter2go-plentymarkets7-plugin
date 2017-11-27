@@ -107,7 +107,7 @@ class Newsletter2GoController extends Controller
             $filteredContacts = $this->filterEmails($filteredContacts, $emails);
         }
 
-        return $filteredContacts['entries'];
+        return $filteredContacts;
     }
 
     public function checkEmail($email)
