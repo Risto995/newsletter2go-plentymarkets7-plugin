@@ -59,10 +59,7 @@ class Newsletter2GoController extends Controller
         $page = $request->get('page', 1);
         $limit = $request->get('limit', 50);
         $hours = $request->get('hours', null);
-        $emails = $request->get('emails');
-        if ($emails != null) {
-            $emails = explode(",", $emails);
-        }
+        $emails = $request->get('emails', []);
         $fields = $request->get('fields', ['id','firstName','lastName','newsletterAllowanceAt','classId','updatedAt']);
         $groups = $request->get('groups', []);
         /** @var ContactRepositoryContract $contactRepository */
@@ -88,7 +85,7 @@ class Newsletter2GoController extends Controller
             $filteredContacts = $this->checkHours($filteredContacts, $hours);
         }
 
-        if ($emails != null) {
+        if (!empty($emails)) {
             $filteredContacts = $this->filterEmails($filteredContacts, $emails);
         }
 
