@@ -60,7 +60,7 @@ class Newsletter2GoController extends Controller
         $limit = $request->get('limit', 50);
         $hours = $request->get('hours', null);
         $emails = $request->get('emails', []);
-        $fields = $request->get('fields', ['id','firstName','lastName','newsletterAllowanceAt','classId','updatedAt','gender', 'birthday']);
+        $fields = $request->get('fields', ['id','firstName','lastName','newsletterAllowanceAt','classId','updatedAt','gender', 'birthdayAt']);
         $groups = $request->get('groups', []);
         /** @var ContactRepositoryContract $contactRepository */
         $contactRepository = pluginApp(ContactRepositoryContract::class);
