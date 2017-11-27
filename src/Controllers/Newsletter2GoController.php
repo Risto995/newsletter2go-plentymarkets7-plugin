@@ -72,13 +72,6 @@ class Newsletter2GoController extends Controller
         $filteredContacts = [];
 
         foreach ($contacts as $contact) {
-            $ccontact = [];
-            foreach ($contact as $key => $value){
-                if($key !== 'options'){
-                    array_push($ccontact, $contact[$key]);
-                }
-            }
-            $contact = $ccontact;
             if ($this->checkEmail($contact['email'])) {
                 if ($newsletterSubscribersOnly && $contact['newsletterAllowanceAt'] === null) {
                     continue;
@@ -98,12 +91,6 @@ class Newsletter2GoController extends Controller
 
         if ($emails != null) {
             $filteredContacts = $this->filterEmails($filteredContacts, $emails);
-        }
-
-        if(empty($groups)){
-            $response['all_groups'] = $filteredContacts;
-
-            return $response;
         }
 
         return $filteredContacts;
