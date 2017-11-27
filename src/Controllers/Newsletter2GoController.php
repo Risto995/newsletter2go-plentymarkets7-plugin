@@ -41,7 +41,7 @@ class Newsletter2GoController extends Controller
     {
         /** @var ContactRepositoryContract $contactRepository */
         $contactRepository = pluginApp(ContactRepositoryContract::class);
-        $contacts = $contactRepository->getContactList()->getResult();
+        $contacts = $this->customers($request);
 
         $response['data'] = count($contacts);
         $response['success'] = true;
@@ -53,7 +53,7 @@ class Newsletter2GoController extends Controller
      * Returns all customers on the system
      *
      * @param Request $request
-     * @return \Plenty\Repositories\Models\PaginatedResult
+     * @return array
      */
     public function customers(Request $request)
     {
@@ -76,7 +76,6 @@ class Newsletter2GoController extends Controller
         $contactRepository = pluginApp(ContactRepositoryContract::class);
         $contacts = $contactRepository->getContactList([], [], $fields, $page, $limit)->getResult();
         $filteredContacts = [];
-        $hoursContacts = [];
 
         foreach ($contacts as $contact) {
             if ($this->checkEmail($contact['email'])) {
@@ -108,10 +107,7 @@ class Newsletter2GoController extends Controller
             $filteredContacts = $this->filterEmails($filteredContacts, $emails);
         }
 
-        $response['data'] = $filteredContacts;
-        $response['success'] = true;
-
-        return $response;
+        return $filteredContacts['entries'];
     }
 
     public function checkEmail($email)
