@@ -64,7 +64,6 @@ class Newsletter2GoController extends Controller
             $emails = explode(",", $emails);
         }
         $fields = $request->get('fields', ['id','firstName','lastName','newsletterAllowanceAt','classId','updatedAt']);
-        array_merge($fields, ['id','firstName','lastName','newsletterAllowanceAt','classId','updatedAt']);
         $groups = $request->get('groups', []);
         /** @var ContactRepositoryContract $contactRepository */
         $contactRepository = pluginApp(ContactRepositoryContract::class);
