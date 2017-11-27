@@ -43,10 +43,7 @@ class Newsletter2GoController extends Controller
         $contactRepository = pluginApp(ContactRepositoryContract::class);
         $contacts = $this->customers($request);
 
-        $response['data'] = count($contacts);
-        $response['success'] = true;
-
-        return $response;
+        return count($contacts);
     }
 
     /**
