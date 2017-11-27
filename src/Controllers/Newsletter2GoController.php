@@ -65,10 +65,7 @@ class Newsletter2GoController extends Controller
         }
         $fields = $request->get('fields', 'id,firstName,lastName,newsletterAllowanceAt,classId,updatedAt');
         $fields = explode(",", $fields);
-        $groups = $request->get('groups', null);
-        if ($groups != null) {
-            $groups = explode(",", $groups);
-        }
+        $groups = $request->get('groups', []);
         /** @var ContactRepositoryContract $contactRepository */
         $contactRepository = pluginApp(ContactRepositoryContract::class);
         $contacts = $contactRepository->getContactList([], [], $fields, $page, $limit)->getResult();
@@ -76,18 +73,14 @@ class Newsletter2GoController extends Controller
 
         foreach ($contacts as $contact) {
             if ($this->checkEmail($contact['email'])) {
-                if ($newsletterSubscribersOnly && $contact['newsletterAllowanceAt'] != null) {
-                    if ($groups != null && in_array($contact['classId'], $groups)) {
-                        array_push($filteredContacts, $contact);
-                    } elseif ($groups == null) {
-                        array_push($filteredContacts, $contact);
-                    }
-                } elseif (!$newsletterSubscribersOnly) {
-                    if ($groups != null && in_array($contact['classId'], $groups)) {
-                        array_push($filteredContacts, $contact);
-                    } elseif ($groups == null) {
-                        array_push($filteredContacts, $contact);
-                    }
+                if (!$newsletterSubscribersOnly || $contact['newsletterAllowanceAt'] === null) {
+                    continue;
+                }
+
+                if (!empty($groups) && in_array($contact['classId'], $groups)) {
+                    array_push($filteredContacts, $contact);
+                } elseif (empty($groups)) {
+                    array_push($filteredContacts, $contact);
                 }
             }
         }
