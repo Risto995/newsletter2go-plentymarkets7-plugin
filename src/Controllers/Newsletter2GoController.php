@@ -72,7 +72,7 @@ class Newsletter2GoController extends Controller
         $filteredContacts = [];
 
         foreach ($contacts as $contact) {
-            $contact['options'] = null;
+            $contact['options'] = 0;
             if ($this->checkEmail($contact['email'])) {
                 if ($newsletterSubscribersOnly && $contact['newsletterAllowanceAt'] === null) {
                     continue;
