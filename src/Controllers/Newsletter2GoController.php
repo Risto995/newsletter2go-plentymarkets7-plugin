@@ -75,12 +75,12 @@ class Newsletter2GoController extends Controller
             if ($this->checkEmail($contact['email'])) {
                 if ($newsletterSubscribersOnly && $contact['newsletterAllowanceAt'] === null) {
                     continue;
-                }
-
-                if (!empty($groups) && in_array($contact['classId'], $groups)) {
-                    array_push($filteredContacts, $contact);
-                } elseif (empty($groups)) {
-                    array_push($filteredContacts, $contact);
+                } else {
+                    if (!empty($groups) && in_array($contact['classId'], $groups)) {
+                        array_push($filteredContacts, $contact);
+                    } elseif (empty($groups)) {
+                        array_push($filteredContacts, $contact);
+                    }
                 }
             }
         }
