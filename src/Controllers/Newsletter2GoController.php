@@ -93,6 +93,12 @@ class Newsletter2GoController extends Controller
             $filteredContacts = $this->filterEmails($filteredContacts, $emails);
         }
 
+        if(empty($groups)){
+            $response['all_groups'] = $filteredContacts;
+
+            return $response;
+        }
+
         return $filteredContacts;
     }
 
