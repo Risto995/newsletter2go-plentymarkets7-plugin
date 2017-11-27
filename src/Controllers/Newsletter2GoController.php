@@ -79,15 +79,13 @@ class Newsletter2GoController extends Controller
                 if ($newsletterSubscribersOnly && $contact['newsletterAllowanceAt'] != null) {
                     if ($groups != null && in_array($contact['classId'], $groups)) {
                         array_push($filteredContacts, $contact);
-                    }
-                    if ($groups == null) {
+                    } elseif ($groups == null) {
                         array_push($filteredContacts, $contact);
                     }
                 } elseif (!$newsletterSubscribersOnly) {
                     if ($groups != null && in_array($contact['classId'], $groups)) {
                         array_push($filteredContacts, $contact);
-                    }
-                    if ($groups == null) {
+                    } elseif ($groups == null) {
                         array_push($filteredContacts, $contact);
                     }
                 }
