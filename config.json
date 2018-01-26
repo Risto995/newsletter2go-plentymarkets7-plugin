@@ -1,0 +1,8 @@
+[
+  {
+    "tab"   :   "Order Tracking",
+    "key"   :   "newsletter2go.company_id",
+    "label" :   "Company ID",
+    "type"  :   "text"
+  }
+]
