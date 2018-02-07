@@ -1,8 +1,8 @@
 [
   {
-    "tab"   :   "Order Tracking",
-    "key"   :   "newsletter2go.company_id",
-    "label" :   "Company ID",
-    "type"  :   "text"
+    "tab"       : "Connect",
+    "key"       : "newsletter2go.company_name",
+    "label"     : "Connect to Newsletter2Go",
+    "type"      : "category_select",
   }
 ]
