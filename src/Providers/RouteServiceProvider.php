@@ -11,9 +11,12 @@ class RouteServiceProvider extends BaseRouteServiceProvider
 {
     public function map(ApiRouter $apiRouter)
     {
-        $controllerClass = ApiController::class;
+        $apiRouter->get('bla', 'Newsletter2Go\Controllers\ApiController@test');
+
+
+        /*$controllerClass = ApiController::class;
         $callbackController = CallbackController::class;
-        $apiRouter->get('newsletter2go/test', $controllerClass . '@test');
+        $apiRouter->get('newsletter2go/test', $controllerClass . '@test');*/
         
         /*$apiRouter->version(['v1'], ['middleware' => 'oauth'], function ($apiRouter) {
 
