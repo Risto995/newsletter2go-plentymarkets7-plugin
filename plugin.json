@@ -5,12 +5,5 @@
   "author": "Newsletter2Go",
   "type": "template",
   "serviceProvider": "Newsletter2Go\\Providers\\ServiceProvider",
-  "dataProviders": [
-    {
-      "key":"Newsletter2Go\\Containers\\HeadContainer",
-      "name":"Newsletter2Go Order Tracking",
-      "description": "Newsletter2Go Order Tracking"
-    }
-  ],
   "version": "1.0.0"
 }
