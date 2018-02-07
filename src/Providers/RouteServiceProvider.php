@@ -18,7 +18,7 @@ class RouteServiceProvider extends BaseRouteServiceProvider
             $apiRouter->get('newsletter2go/version', $controllerClass . '@version');
             $apiRouter->get('newsletter2go/count', $controllerClass . '@customerCount');
             $apiRouter->get('newsletter2go/customers', $controllerClass . '@customers');
-            $apiRouter->get('newsletter2go/callback', $callbackController . '@callback');
+            $apiRouter->post('newsletter2go/callback', $callbackController . '@callback');
         });
     }
 }
