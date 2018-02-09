@@ -13,17 +13,14 @@ use Plenty\Plugin\ConfigRepository;
 
 class HeadContainer
 {
-    private $twig;
-    private $webStoreConfig;
-    private $templateService;
-    private $orderRepositoryContract;
-    private $customerService;
-    private $variationRepository;
-    private $configRepository;
-
     /**
      * HeadContainer constructor.
-     * 
+     */
+    public function __construct()
+    {
+    }
+
+    /**
      * @param Twig $twig
      * @param WebstoreConfigurationService $webStoreConfig
      * @param TemplateService $templateService
@@ -31,8 +28,9 @@ class HeadContainer
      * @param CustomerService $customerService
      * @param VariationRepositoryContract $variationRepository
      * @param ConfigRepository $configRepository
+     * @return string
      */
-    public function __construct(
+    public function call(
         Twig $twig,
         WebstoreConfigurationService $webStoreConfig,
         TemplateService $templateService,
@@ -42,24 +40,10 @@ class HeadContainer
         ConfigRepository $configRepository
     )
     {
-        $this->twig = $twig;
-        $this->webStoreConfig = $webStoreConfig;
-        $this->templateService = $templateService;
-        $this->orderRepositoryContract = $orderRepositoryContract;
-        $this->customerService = $customerService;
-        $this->variationRepository = $variationRepository;
-        $this->configRepository = $configRepository;
-    }
-
-    /**
-     * @return string
-     */
-    public function call()
-    {
-        $customerId = $this->customerService->getContactId();
-        $storeConf = $this->webStoreConfig->getWebstoreConfig();
-        $currentTemplate = $this->templateService->getCurrentTemplate();
-        $companyId = $this->configRepository->get('newsletter2go.company_id');
+        $customerId = $customerService->getContactId();
+        $storeConf = $webStoreConfig->getWebstoreConfig();
+        $currentTemplate = $templateService->getCurrentTemplate();
+        $companyId = $configRepository->get('newsletter2go.company_id');
 
         switch ($currentTemplate) {
             case 'tpl.confirmation':
@@ -73,7 +57,7 @@ class HeadContainer
         $orderDetails = [];
         $revenue = 0;
         /** @var Order $order */
-        $order = $this->orderRepositoryContract->getLatestOrderByContactId($customerId);
+        $order = $orderRepositoryContract->getLatestOrderByContactId($customerId);
         $orderArray = $order->toArray();
         if ($currentTemplate === 'tpl.confirmation') {
             foreach ($orderArray['orderItems'] as $orderItem) {
@@ -85,7 +69,7 @@ class HeadContainer
                 $price = $amount ? $amount['priceGross'] : 0;
                 $currency = $amount ? $amount['currency'] : '';
 
-                $variation = $this->variationRepository->findById($orderItem['itemVariationId']);
+                $variation = $variationRepository->findById($orderItem['itemVariationId']);
                 if (!$variation) {
                     continue;
                 }
@@ -114,6 +98,6 @@ class HeadContainer
             'customerId' => (int)$customerId,
         ];
 
-        return $this->twig->render('Newsletter2Go::content.head', $template);
+        return $twig->render('Newsletter2Go::content.head', $template);
     }
 }
