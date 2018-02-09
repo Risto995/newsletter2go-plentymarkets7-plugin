@@ -3,7 +3,6 @@
 namespace Newsletter2Go\Containers;
 
 use IO\Services\CustomerService;
-use IO\Services\SessionStorageService;
 use IO\Services\TemplateService;
 use IO\Services\WebstoreConfigurationService;
 use Plenty\Modules\Item\Variation\Contracts\VariationRepositoryContract;
@@ -25,7 +24,6 @@ class HeadContainer
      * @param Twig $twig
      * @param WebstoreConfigurationService $webStoreConfig
      * @param TemplateService $templateService
-     * @param SessionStorageService $sessionStorage
      * @param OrderRepositoryContract $orderRepositoryContract
      * @param CustomerService $customerService
      * @param VariationRepositoryContract $variationRepository
@@ -36,7 +34,6 @@ class HeadContainer
         Twig $twig,
         WebstoreConfigurationService $webStoreConfig,
         TemplateService $templateService,
-        SessionStorageService $sessionStorage,
         OrderRepositoryContract $orderRepositoryContract,
         CustomerService $customerService,
         VariationRepositoryContract $variationRepository,
@@ -101,6 +98,6 @@ class HeadContainer
             'customerId' => (int)$customerId,
         ];
 
-        return $twig->render('Yoochoose::content.head', $template);
+        return $twig->render('Newsletter2Go::content.head', $template);
     }
 }
