@@ -54,12 +54,14 @@ class HeadContainer
                 break;
         }
 
-        $orderDetails = [];
-        $revenue = 0;
-        /** @var Order $order */
-        $order = $orderRepositoryContract->getLatestOrderByContactId($customerId);
-        $orderArray = $order->toArray();
         if ($currentTemplate === 'tpl.confirmation') {
+
+            $orderDetails = [];
+            $revenue = 0;
+            /** @var Order $order */
+            $order = $orderRepositoryContract->getLatestOrderByContactId($customerId);
+            $orderArray = $order->toArray();
+
             foreach ($orderArray['orderItems'] as $orderItem) {
                 if ($orderItem['id'] == 0) {
                     continue;
@@ -84,20 +86,22 @@ class HeadContainer
                     'currency' => $currency,
                 ];
             }
+
+            $revenue = number_format((float)$revenue, 2, '.', '');
+
+            $template = [
+                'shopName' => $storeConf->name,
+                'company_id' => $companyId,
+                'order' => $order,
+                'revenue' => $revenue,
+                'orderData' => json_encode($orderDetails),
+                'currentPage' => $currentPage,
+                'customerId' => (int)$customerId,
+            ];
+
+            return $twig->render('Newsletter2Go::content.head', $template);
         }
 
-        $revenue = number_format((float)$revenue, 2, '.', '');
-
-        $template = [
-            'shopName' => $storeConf->name,
-            'company_id' => $companyId,
-            'order' => $order,
-            'revenue' => $revenue,
-            'orderData' => json_encode($orderDetails),
-            'currentPage' => $currentPage,
-            'customerId' => (int)$customerId,
-        ];
-
-        return $twig->render('Newsletter2Go::content.head', $template);
+        return '';
     }
 }
